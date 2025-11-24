@@ -35,12 +35,11 @@ export const registerPatient = async (_currentState: any, formData: any): Promis
         const validatedFields = registerValidationZodSchema.safeParse(validationData);
 
         console.log(validatedFields, "val");
-        // aikhane ami dekchi j error er vitor Error name akti field ache jar value akti [] tahole amar question error er vitor aabr Error [] airokom kivabe ? ar aikhane to ami issue name kichu dekte pacchi nah kintu code e to dekchi (support)
 
         if (!validatedFields.success) {
             return {
                 success: false,
-                errors: validatedFields.error.issues.map(issue => { // issues ase bujbo kivabe (support)
+                errors: validatedFields.error.issues.map(issue => {
                     return {
                         field: issue.path[0],
                         message: issue.message,
