@@ -7,6 +7,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import z from "zod";
+import { setCookie } from "./tokenHandlers";
 
 const loginValidationZodSchema = z.object({
     email: z.email({
@@ -76,17 +77,18 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
             throw new Error("Tokens not found in cookies");
         }
 
-        const cookieStore = await cookies();
+        
+console.log(accessTokenObject,"accessTokenObject");
 
-        cookieStore.set("accessToken", accessTokenObject.accessToken, {
+       await setCookie("accessToken", accessTokenObject.accessToken, {
             secure: true,
-            httpOnly: true,
+            httpOnly: true, 
             maxAge: parseInt(accessTokenObject['Max-Age']) || 1000 * 60 * 60,
             path: accessTokenObject.Path || "/",
             sameSite: accessTokenObject['SameSite'] || "none",
         });
 
-        cookieStore.set("refreshToken", refreshTokenObject.refreshToken, {
+      await  setCookie("refreshToken", refreshTokenObject.refreshToken, {
             secure: true,
             httpOnly: true,
             maxAge: parseInt(refreshTokenObject['Max-Age']) || 1000 * 60 * 60 * 24 * 90,
@@ -108,7 +110,11 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
                 redirect(requestedPath);
             } else {
                 redirect(getDefaultDashboardRoute(userRole));
-            }
+            } 
+        }else{
+            console.log("work");
+            
+            redirect(getDefaultDashboardRoute(userRole));
         }
 
     } catch (error: any) {
