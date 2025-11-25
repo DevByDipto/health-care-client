@@ -78,7 +78,7 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
         }
 
         
-console.log(accessTokenObject,"accessTokenObject");
+// console.log(accessTokenObject,"accessTokenObject");
 
        await setCookie("accessToken", accessTokenObject.accessToken, {
             secure: true,
@@ -104,17 +104,15 @@ console.log(accessTokenObject,"accessTokenObject");
         const userRole: UserRole = verifiedToken.role;
  
  
-        if (redirectTo) {
+         if (redirectTo) {
             const requestedPath = redirectTo.toString();
             if (isValidRedirectForRole(requestedPath, userRole)) {
-                redirect(requestedPath);
+                redirect(`${requestedPath}?loggedIn=true`);
             } else {
-                redirect(getDefaultDashboardRoute(userRole));
-            } 
-        }else{
-            console.log("work");
-            
-            redirect(getDefaultDashboardRoute(userRole));
+                redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
+            }
+        } else {
+            redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
         }
 
     } catch (error: any) {
@@ -122,7 +120,7 @@ console.log(accessTokenObject,"accessTokenObject");
         if (error?.digest?.startsWith('NEXT_REDIRECT')) {
             throw error;
         }
-        console.log(error);
-        return { error: "Login failed" };
+        // console.log(error);
+        return { success: false, message: `${process.env.NODE_ENV === 'development' ? error.message : "Login Failed. You might have entered incorrect email or password."}` };
     }
 }

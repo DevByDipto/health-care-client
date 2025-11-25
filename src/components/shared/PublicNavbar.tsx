@@ -14,6 +14,8 @@ const PublicNavbar = async () => {
     { href: "#", label: "NGOs" },
   ];
   const accessToken = await getCookie('accesstoken')
+  console.log(accessToken,"access");
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur  dark:bg-background/95">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -35,11 +37,11 @@ const PublicNavbar = async () => {
 
         <div className="hidden md:flex items-center space-x-2">
 {
-  accessToken ? <Link href="/login" className="text-lg font-medium">
+  accessToken ?   <LogoutButton/> 
+          :         
+    <Link href="/login" className="text-lg font-medium">
             <Button>Login</Button>
           </Link> 
-          : 
-   <LogoutButton/>
 }
           
        
@@ -66,9 +68,13 @@ const PublicNavbar = async () => {
                 ))}
                 <div className="border-t pt-4 flex flex-col space-y-4">
                   <div className="flex justify-center"></div>
-                  <Link href="/login" className="text-lg font-medium">
-                    <Button>Login</Button>
-                  </Link>
+                  {
+  accessToken ?    <LogoutButton/>
+          :         
+    <Link href="/login" className="text-lg font-medium">
+            <Button>Login</Button>
+          </Link> 
+}
                 </div>
               </nav>
             </SheetContent>
