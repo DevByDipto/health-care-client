@@ -62,7 +62,7 @@ if (!result.success) {
 }
 
         const setCookieHeaders = res.headers.getSetCookie();
-console.log("setCookieHeaders",setCookieHeaders);
+console.log("setCookieHeaders",setCookieHeaders); 
 
         if (setCookieHeaders && setCookieHeaders.length > 0) {
             setCookieHeaders.forEach((cookie: string) => {
