@@ -13,7 +13,7 @@ const PublicNavbar = async () => {
     { href: "#", label: "Diagnostics" },
     { href: "#", label: "NGOs" },
   ];
-  const accessToken = await getCookie('accesstoken')
+  const accessToken = await getCookie('accessToken')
   console.log(accessToken,"access");
   
   return (

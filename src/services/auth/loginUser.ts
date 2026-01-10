@@ -29,6 +29,7 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
             email: formData.get('email'), 
             password: formData.get('password'), 
         }
+console.log("loginData 1st", loginData);
 
         const validatedFields = loginValidationZodSchema.safeParse(loginData);
 
@@ -43,6 +44,7 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
                 })
             }
         }
+console.log("loginData :",loginData);
 
         const res = await fetch("http://localhost:5000/api/v1/auth/login", {
             method: "POST",
@@ -51,8 +53,16 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
                 "Content-Type": "application/json", 
             },
         });
+         const result = await res.json()
+console.log("res",result);
+console.log("is it console");
+
+if (!result.success) {
+    throw new Error(result.message);
+}
 
         const setCookieHeaders = res.headers.getSetCookie();
+console.log("setCookieHeaders",setCookieHeaders);
 
         if (setCookieHeaders && setCookieHeaders.length > 0) {
             setCookieHeaders.forEach((cookie: string) => {
@@ -117,10 +127,10 @@ export const loginUser = async (_currentState: any, formData: any): Promise<any>
 
     } catch (error: any) {
         // Re-throw NEXT_REDIRECT errors so Next.js can handle them
-        if (error?.digest?.startsWith('NEXT_REDIRECT')) {
-            throw error;
-        }
-        console.log(error);
+        if (error?.digest?.startsWith('NEXT_REDIRECT')) { 
+            throw error; 
+        } 
+        console.log(error); 
         return { success: false, message: `${process.env.NODE_ENV === 'development' ? error.message : "Login Failed. You might have entered incorrect email or password."}` };
     }
 }

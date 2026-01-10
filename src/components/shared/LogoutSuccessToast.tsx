@@ -7,7 +7,7 @@ import { toast } from "sonner";
 const LogoutSuccessToast = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-
+  
   useEffect(() => {
     if (searchParams.get("loggedOut") === "true") {
       toast.success("You have been logged out successfully.");

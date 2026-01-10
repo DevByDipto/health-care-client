@@ -17,7 +17,7 @@ interface DashboardNavbarContentProps {
 }
 const DashboardNavbarContent = ({
   userInfo,
-  navItems,
+  navItems, 
   dashboardHome,
 }: DashboardNavbarContentProps) => {
   const [isOpen, setIsOpen] = useState(false);

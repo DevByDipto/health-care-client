@@ -1,3 +1,5 @@
+"use server"
+
 import { redirect } from "next/navigation";
 import { deleteCookie } from "./tokenHandlers"
 
@@ -7,3 +9,4 @@ await deleteCookie("refreshToken")
 
  redirect("/login?loggedOut=true");
 }
+

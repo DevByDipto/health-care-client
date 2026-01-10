@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
@@ -10,6 +10,8 @@ import { toast } from "sonner";
 
 const LoginForm = ({redirect}:{redirect:string}) => {                            
   const [state, formAction, isPending] = useActionState(loginUser, null);
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
 
   const getFieldError = (fieldName: string) => {
     if (state && state.errors) {
@@ -19,6 +21,7 @@ const LoginForm = ({redirect}:{redirect:string}) => {
       return null;
     }
   };
+console.log("state", state);
 
    useEffect(() => {
     if (state && !state.success && state.message) {
@@ -26,6 +29,25 @@ const LoginForm = ({redirect}:{redirect:string}) => {
     }
   }, [state]);
   // console.log(state);
+  const demoCredentials = {
+  user: {
+    email: "user@gmail.com",
+    password: "123456",
+  },
+  doctor: {
+    email: "doctor@gmail.com",
+    password: "123456",
+  },
+  admin: {
+    email: "admin@gmail.com",
+    password: "123456",
+  },
+};
+const handleAutoFill = (role: "user" | "doctor" | "admin") => {
+  setEmail(demoCredentials[role].email);
+  setPassword(demoCredentials[role].password);
+};
+
   return (
     <form action={formAction}>
       {redirect && <Input
@@ -44,6 +66,8 @@ const LoginForm = ({redirect}:{redirect:string}) => {
               name="email"
               type="email"
               placeholder="m@example.com"
+                value={email}
+                 onChange={(e) => setEmail(e.target.value)}
               //   required
             />
 
@@ -62,6 +86,8 @@ const LoginForm = ({redirect}:{redirect:string}) => {
               name="password"
               type="password"
               placeholder="Enter your password"
+                value={password}
+                 onChange={(e) => setPassword(e.target.value)}
               //   required
             />
             {getFieldError("password") && (
@@ -73,6 +99,19 @@ const LoginForm = ({redirect}:{redirect:string}) => {
         </div>
         <FieldGroup className="mt-4">
           <Field>
+
+<div className="flex gap-2 mb-4">
+  <Button type="button" variant="outline" onClick={() => handleAutoFill("user")}>
+    User
+  </Button>
+  <Button type="button" variant="outline" onClick={() => handleAutoFill("doctor")}>
+    Doctor
+  </Button>
+  <Button type="button" variant="outline" onClick={() => handleAutoFill("admin")}>
+    Admin
+  </Button>
+</div>
+
             <Button type="submit" disabled={isPending}>
               {isPending ? "Logging in..." : "Login"}
             </Button>
@@ -94,6 +133,7 @@ const LoginForm = ({redirect}:{redirect:string}) => {
           </Field>
         </FieldGroup>
       </FieldGroup>
+
     </form>
   );
 };
