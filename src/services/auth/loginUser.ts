@@ -47,8 +47,8 @@ console.log("loginData 1st", loginData);
 console.log("loginData :",loginData);
 
         const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-            method: "POST",
-            body: JSON.stringify(loginData),
+            method: "POST", 
+            body: JSON.stringify(loginData), 
             headers: {
                 "Content-Type": "application/json", 
             },
